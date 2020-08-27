@@ -6,17 +6,45 @@
 <body>
 	<h1>Projeto grupo 6</h1>
 
-	<input type="text" name=""><br>
+	dados <input id="dados" type="text" name="dados"><br>
 
 	<input type="file" name="arquivo"><br>
 
-<select id="opcao">
-  <option value="amostra">Amostra</option>
-  <option value="populacao">População</option>
-</select><br>
+	<p>Amostra<input type="radio" name="opcao" value="amostra"></p>
+	<p>População<input type="radio" name="opcao" value="populacao"></body></p>
+
+escolha o tipo da variavel: 
+	<select id="tipo">
+		<option value="nominal">nominal</option>
+		<option value="ordinal">ordinal</option>
+		<option value="discreta">discreta</option>
+		<option value="continua">continua</option>
+	</select><br>
 
 
-	nome da variavel: <input type="text" name="variavel"><br>
-	<button>calcular</button>
+	nome da variavel: <input type="text" name="variavel" id="variavel"><br> <!--nome da variavél: se é profissão, idade, salário... etc -->
+
+	<!-- TIPOS DE VARIAVEL:
+		A VARIAVEL É QUALITATIVA QUANDO SE TRATA DE PALAVRAS(EXEMPLOS: CIDADE, ESTADO CIVIL, SEXO, CORES, GRAU DE SASTISFAÇÃO....)
+		qualitativa nominal -> A ordem não importa, por exemplo se a variavel for uma cor a ordem não importa.
+		qualitativa ordinal -> A ordem importa, quando tem uma ordenação pré definida, por exemplo: meses do ano;
+
+		A VARIAVEL É QUANTITATIVA QUANDO SE TRATA DE NUMEROS(EXEMPLOS: SALARIOS, IDADES, FATURAMENTO, VENDAS....  )
+		quantitativa discreta -> ordem crescente,
+		quantitativa continua -> ordem crescente,
+
+		******A ORGANIZAÇÃO DOS DADOS DEPENDE DO TIPO DE VARIVEL ESCOLHIDA!! *******************
+	 -->
+	<button onclick="calcular()">calcular</button>
+
+	<table style="display: none" id="tabela">
+    <tr>
+        <td id="nomeVariavel"></td>
+        <td>Frequência</td>
+    </tr>
+   
+</table>
+
+	<script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>
