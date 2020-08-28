@@ -16,16 +16,20 @@ function calcular() {
 
 	var arrayObjetos = [];
 	arrayObjetos = criaObjetos(dadosArray);
-	
-	var objetos = [];
-	objetos = quantidade(arrayObjetos);
 
-	criaTabela(variavel, objetos);
+	if(tipo.value == "ordinal"){
+		tabelaOrdinal(arrayObjetos)
+	}else{
+		var objetos = [];
+		objetos = quantidade(arrayObjetos);
 
-	mudaOrdem(tipo, objetos);
+		objetos = mudaOrdem(tipo, objetos);
 
-	for(var i = 0; i <= objetos.length; i++){
-		console.log(objetos[i]);
+		criaTabela(variavel, objetos);
+
+		for(var i = 0; i <= objetos.length; i++){
+			console.log(objetos[i]);
+		}
 	}
 	
 }
@@ -41,25 +45,37 @@ function criaObjetos(dados){
 }
 
 function quantidade(objts){
-	var excluir = 0;
+	let excluir = 0;
 	var cont = 0;
+	var objts2 = [];
 	for(var i = 0; i < objts.length; i++){
 		cont++;
+		let boolean = true;
 		for(var j = cont; j < objts.length; j++){
-			if(objts[i].dado == objts[j].dado){
+			if(objts[i].dado == objts[j].dado ){
 				objts[i].quantidade = objts[i].quantidade + 1;
-				if(objts[i].quantidade <= 2){
-					excluir++;
-				}
 			}
+		}
+
+		if(objts2.length != 0){
+			for(var n = 0; n < objts2.length; n++){
+				if(objts2[n].dado == objts[i].dado){
+					boolean = false;
+				}
+			}	
+
+		}
+
+		if(boolean){
+			objts2.push(objts[i])
 		}
 	}
 
-	for(var i = 0; i <= excluir; i++){
-		objts.pop();
-	}
+	objts2.pop()
 
-	return objts;
+	objts = objts2
+	
+	return objts2;
 }
 
 function criaTabela(variavel, array){
@@ -84,6 +100,43 @@ function criaTabela(variavel, array){
 }
 
 function mudaOrdem(ordem,array){
+
+	if(ordem.value == "numero"){
+		array.sort((a, b) => a.dado - b.dado)
+	}
+
+	return array;
 	
 }
 
+
+function tabelaOrdinal(array){
+	let maior = 0
+	let menor = 99999
+	array.pop()
+	for(var i = 0; i < array.length; i++){
+		if(array[i].dado > maior){
+			maior = array[i].dado
+		}
+
+		if(array[i].dado <= menor){
+			menor = array[i].dado
+		}
+	}
+
+	let amplitude = maior - menor
+	amplitude += 1
+
+	let linha1 = Math.sqrt(array.length)
+	let linha2 = linha1 - 1
+	let linha3 = linha1 + 1
+
+	let intervalo = 0
+	boolean = true
+	
+	
+
+	console.log(intervalo)
+
+
+}
