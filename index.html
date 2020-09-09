@@ -16,9 +16,9 @@
 escolha o tipo da variavel: 
 	<select id="tipo">
 		<option value="palavra">nominal</option>
-		<option value="palavra">ordinal</option>
+		<option value="ordinal">ordinal</option>
 		<option value="numero">discreta</option>
-		<option value="ordinal">continua</option>
+		<option value="continua">continua</option>
 	</select><br>
 
 
@@ -37,13 +37,10 @@ escolha o tipo da variavel:
 	 -->
 	<button onclick="calcular()">calcular</button>
 
-	<table style="display: none" id="tabela">
-    <tr>
-        <td id="nomeVariavel"></td>
-        <td>Frequência</td>
-    </tr>
-   
-</table>
+	<div id="tabelas">
+		<input type="hidden" name="" id="indice" value="0">
+		
+	</div>
 
 	<script type="text/javascript" src="js/index.js"></script>
 </body>
