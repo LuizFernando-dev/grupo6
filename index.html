@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
+		
+	</script>
 	<title>Grupo 6</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -26,7 +30,7 @@
 			<select id="tipo">
 				<option value="palavra">nominal</option>
 				<option value="ordinal">ordinal</option>
-				<option value="numero">discreta</option>
+				<option value="discreta">discreta</option>
 				<option value="continua">continua</option>
 			</select><br>
 
@@ -46,11 +50,12 @@
 			-->
 			</div>
 		<button onclick="calcular()" class="btn btn-default">calcular</button>
-
+		
 		<div id="tabelas">
 			<input type="hidden" name="" id="indice" value="0">
 			
 		</div>
+		<div id="graficos"></div>
 
 	</div>
 

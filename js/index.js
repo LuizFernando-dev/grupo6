@@ -30,9 +30,12 @@ function calcular() {
 			objetos = arrumaIndice(objetos)
 			objetosOrdinal = objetos
 			tabelaOrdinal()
+			google.charts.setOnLoadCallback(desenharGrafico(objetos))
 		}else{
 			objetos = mudaOrdem(tipo, objetos)
+			arrayGrafico = objetos
 			criaTabela(objetos)
+			google.charts.setOnLoadCallback(desenharGrafico(objetos))
 		}
 
 		objetosOrdinal = objetos
@@ -85,6 +88,9 @@ function quantidade(objts){
 }
 
 function criaTabela(array){
+	//testando gráficos
+	
+	//testando gráficos
 	let tabela = criaTabelaOriginal()
 	let nomeVariavel = mudaNomeVariavel()
 	tabela.setAttribute("style", "display: ;")
@@ -272,6 +278,7 @@ function ordenando(){
 
 	Frequencias(objetosOrdinal)
 	tabelaOrdinal()
+	google.charts.setOnLoadCallback(desenharGrafico(objetosOrdinal))
 
 } 
 
@@ -354,3 +361,29 @@ function Frequencias(array){
 	return array
 }
 
+google.charts.load('current', {'packages':['corechart']});
+		
+function desenharGrafico(array){
+	let tipo = document.getElementById('tipo')
+	let arrayGrafico = []
+	let visualizarGrafico = document.getElementById('graficos')
+	visualizarGrafico.innerHTML = ""
+	let grafico = new google.visualization.DataTable();
+	grafico.addColumn('string', 'Nome Dado')
+	grafico.addColumn('number', 'Valor')
+
+	for(let i = 0; i < array.length; i++){
+		arrayGrafico[i] = [array[i].dado,array[i].frequenciaPorcentagem]
+	}
+
+	grafico.addRows(arrayGrafico)
+	console.log(tipo.value)
+	if(tipo.value == "discreta"){
+		let pizza = new google.visualization.ColumnChart(document.getElementById('graficos'))
+		pizza.draw(grafico)
+	}else{
+		let pizza = new google.visualization.PieChart(document.getElementById('graficos'))
+		pizza.draw(grafico)
+	}
+	
+}
