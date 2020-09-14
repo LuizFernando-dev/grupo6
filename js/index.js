@@ -101,7 +101,7 @@ function criaTabela(array){
 		tdd.innerHTML = array[i].quantidade
 		tdFP.innerHTML = array[i].frequenciaPorcentagem.toFixed(1)
 		freqAcumulada.innerHTML = array[i].freqAcumulada
-		acumuladaP.innerHTML = array[i].acumuladaP
+		acumuladaP.innerHTML = array[i].acumuladaP.toFixed(1)
 		
 	
 		tr.appendChild(td)
