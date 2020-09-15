@@ -2,23 +2,15 @@
 <html>
 <head>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<link rel="stylesheet" href="css/estilo.css">
 	<script>
 		
 	</script>
 	<title>Grupo 6</title>
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-	<link rel="stylesheet" href="css/estilo.css">
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-
-	<!-- Latest compiled and minified JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div class="container">
 		<h1>Projeto grupo 6</h1>
-		<div class="form-group">
 			<h4>Dados<input id="dados" class="form-control" type="text" name="dados" placeholder="valores separados por virgula ','" ></h4><br>
 
 			<input type="file" name="arquivo" id="exampleInputFile"><br>
@@ -26,7 +18,7 @@
 			<p>Amostra<input type="radio" name="opcao" value="amostra"></p>
 			<p>População<input type="radio" name="opcao" value="populacao"></body></p>
 
-			escolha o tipo da variavel: 
+			<h4>Escolha o tipo da variavel:</h4> 
 			<select id="tipo">
 				<option value="palavra">nominal</option>
 				<option value="ordinal">ordinal</option>
@@ -35,7 +27,7 @@
 			</select><br>
 
 
-			nome da variavel: <input type="text" name="variavel" id="variavel"><br> <!--nome da variavél: se é profissão, idade, salário... etc -->
+			<h4>Nome Da Variavel: <input type="text" name="variavel" id="variavel"></h4><br> <!--nome da variavél: se é profissão, idade, salário... etc -->
 
 			<!-- TIPOS DE VARIAVEL:
 				A VARIAVEL É QUALITATIVA QUANDO SE TRATA DE PALAVRAS(EXEMPLOS: CIDADE, ESTADO CIVIL, SEXO, CORES, GRAU DE SASTISFAÇÃO....)
@@ -48,14 +40,15 @@
 
 				******A ORGANIZAÇÃO DOS DADOS DEPENDE DO TIPO DE VARIVEL ESCOLHIDA!! *******************
 			-->
-			</div>
-		<button onclick="calcular()" class="btn btn-default">calcular</button>
+		<button onclick="calcular()" class="botao">calcular</button>
 		
 		<div id="tabelas">
 			<input type="hidden" name="" id="indice" value="0">
 			
 		</div>
-		<div id="graficos"></div>
+		<div id="graficos">
+
+		</div>
 
 	</div>
 

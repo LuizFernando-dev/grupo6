@@ -1,4 +1,66 @@
+body{
+    font-family: courier,arial,helvetica;
+    background-color: rgb(30, 27, 37);
+}
+
+h1{
+    text-align: center;
+}
+
+#tabelaCorpo0{
+    background-color: #09cee2;
+}
+
+.container{
+    width: 60%;
+    margin-top: 10%;
+    margin-right: 15%;
+    margin-left: 15%;
+    padding: 5%;
+    margin-bottom: 10%;
+    border-radius: 10px;
+    background-color: #c4e2e2;
+}
+
+#tabelas{
+    margin: 0 auto;
+    margin-bottom: 40px;
+    border: 5px;
+    border: 1px solid #7a7; 
+}
+
+#tabelas table{
+    margin: 0 auto;
+}
+
+#tabelas td{
+    border: 1px solid black;
+    font-size: 20px;
+    text-align: center;
+    color: rgb(21, 8, 46);
+}
+
+#graficos{
+    margin: 0 auto;
+    margin-left: 5%;
+}
 
 #dados{
-    width: 100%;
+    width: 70%;
+    height: 40px;
+    font-size: 20px;
+}
+
+.botao{
+    background: blue no-repeat;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 20px;
+    color: white;
+    color:#999;
+    margin-bottom: 20px;
+}
+
+.botao:hover{
+    background-color: rgb(127, 115, 233);
 }

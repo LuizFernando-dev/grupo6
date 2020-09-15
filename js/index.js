@@ -44,7 +44,7 @@ function calcular() {
 }
 
 function criaObjetos(dados){
-	let objetos = []
+	const objetos = []
 	for(let i = 0; i <= dados.length; i++){
 		objetos.push(new ObjetoDado(dados[i], 1, i))
 	}
@@ -55,7 +55,7 @@ function criaObjetos(dados){
 
 function quantidade(objts){
 	let cont = 0
-	let objts2 = []
+	const objts2 = []
 
 	for(let i = 0; i < objts.length; i++){
 		cont++
@@ -91,17 +91,17 @@ function criaTabela(array){
 	//testando gráficos
 	
 	//testando gráficos
-	let tabela = criaTabelaOriginal()
-	let nomeVariavel = mudaNomeVariavel()
+	const tabela = criaTabelaOriginal()
+	const nomeVariavel = mudaNomeVariavel()
 	tabela.setAttribute("style", "display: ;")
 
 	for(let i = 0; i < array.length; i++){
-		let tr = document.createElement("tr")
-		let td = document.createElement("td")
-		let tdd = document.createElement("td")
-		let tdFP = document.createElement("td")
-		let freqAcumulada = document.createElement("td")
-		let acumuladaP = document.createElement("td")
+		const tr = document.createElement("tr")
+		const td = document.createElement("td")
+		const tdd = document.createElement("td")
+		const tdFP = document.createElement("td")
+		const freqAcumulada = document.createElement("td")
+		const acumuladaP = document.createElement("td")
 
 		td.innerHTML = array[i].dado
 		tdd.innerHTML = array[i].quantidade
@@ -135,6 +135,7 @@ function tabelaContinua(array){
 	let maior = 0
 	let menor = 99999
 	let frequenciaAcumulada = 0
+	const graficoContinua = []
 	array.pop()
 	for(let i = 0; i < array.length; i++){
 		if(array[i].dado > maior){
@@ -170,8 +171,8 @@ function tabelaContinua(array){
 		linha = linha3
 	}
 	
-	let tabela = criaTabelaOriginal()
-	let nomeVariavel = mudaNomeVariavel()
+	const tabela = criaTabelaOriginal()
+	const nomeVariavel = mudaNomeVariavel()
 	tabela.setAttribute("style", "display: ;")
 
 	let intervalo2 = intervalo
@@ -203,10 +204,15 @@ function tabelaContinua(array){
 
 		td.innerHTML = valor1 + "|--" + valor2
 		tdd.innerHTML = frequencia
+
+		//grafico
+		graficoContinua.push([Number(valor1),valor2])
+
 		valor1 = valor2
 		tdFP.innerHTML = ((frequencia * 100)/total).toFixed(1)
 		freqAcumulada.innerHTML = frequenciaAcumulada
 		acumuladaP.innerHTML = (frequenciaAcumulada*100)/total
+
 
 		tr.appendChild(td)
 		tr.appendChild(tdd)
@@ -217,26 +223,27 @@ function tabelaContinua(array){
 		tabela.appendChild(tr)
 	}
 
+	desenharGrafico(graficoContinua)
 }
 
 function tabelaOrdinal(){
-	let tabela = criaTabelaOriginal()
+	const tabela = criaTabelaOriginal()
 	tabela.setAttribute("style", "display: ;")
-	let nomeVariavel = mudaNomeVariavel();
-	let tdPosicao = document.createElement("td")
+	const nomeVariavel = mudaNomeVariavel();
+	const tdPosicao = document.createElement("td")
 	tdPosicao.innerHTML = "Posição"
-	let tabelaCorpo = document.getElementById("tabelaCorpo"+indiceTabelaGlobal)
+	const tabelaCorpo = document.getElementById("tabelaCorpo"+indiceTabelaGlobal)
 	tabelaCorpo.appendChild(tdPosicao)
 
 	for(let i = 0; i < objetosOrdinal.length; i++){
-		let tr = document.createElement("tr")
-		let td = document.createElement("td")
-		let tdd = document.createElement("td")
-		let tdFP = document.createElement("td")
-		let freqAcumulada = document.createElement("td")
-		let acumuladaP = document.createElement("td")
+		const tr = document.createElement("tr")
+		const td = document.createElement("td")
+		const tdd = document.createElement("td")
+		const tdFP = document.createElement("td")
+		const freqAcumulada = document.createElement("td")
+		const acumuladaP = document.createElement("td")
 
-		let input = document.createElement("input")
+		const input = document.createElement("input")
 		input.setAttribute("type", "number")
 		input.setAttribute("style", "width : 30px")
 		input.setAttribute("id", "pos"+indiceTabelaGlobal + i)
@@ -258,7 +265,7 @@ function tabelaOrdinal(){
 		tabela.appendChild(tr)
 	}
 
-	let button = document.createElement("button")
+	const button = document.createElement("button")
 	button.setAttribute("Onclick", "ordenando()")
 	button.innerHTML = "Ordenar"
 	tabela.appendChild(button)
@@ -266,7 +273,7 @@ function tabelaOrdinal(){
 
 function ordenando(){
 	for(let i = 0; i < objetosOrdinal.length; i++){
-		let valor = document.getElementById("pos"+indiceTabelaGlobal+ i)
+		const valor = document.getElementById("pos"+indiceTabelaGlobal+ i)
 		objetosOrdinal[i].indice = valor.value
 	}
 
@@ -284,14 +291,14 @@ function ordenando(){
 
 
 function mudaNomeVariavel(){
-	let nomeVariavel = document.getElementById("nomeVariavel"+indiceTabelaGlobal)
+	const nomeVariavel = document.getElementById("nomeVariavel"+indiceTabelaGlobal)
 	nomeVariavel.innerHTML = variavel.value
 	return nomeVariavel
 }
 
 function criaTabelaOriginal(){
-	let indice = document.getElementById("indice")
-	let indiceTabela = indice.value
+	const indice = document.getElementById("indice")
+	const indiceTabela = indice.value
 	if(indice.value > 0){
 		for(let i = 0; i < indice.value; i++){
 			document.getElementById("tabela"+i).setAttribute("style","display:none")
@@ -300,16 +307,16 @@ function criaTabelaOriginal(){
 
 	indice.value = Number(indice.value) + 1
 	indiceTabelaGlobal = indiceTabela
-	let table = document.createElement("table")
+	const table = document.createElement("table")
 	table.setAttribute("style","display:none")
 	table.setAttribute("id","tabela"+indiceTabela)
-	let tr = document.createElement("tr")
-	let td = document.createElement("td")
+	const tr = document.createElement("tr")
+	const td = document.createElement("td")
 	td.setAttribute("id", "nomeVariavel"+indiceTabela)
-	let tdd = document.createElement("td")
-	let tdFP = document.createElement("td")
-	let tdAcumulada = document.createElement("td")
-	let tdAcumuladaP = document.createElement("td")
+	const tdd = document.createElement("td")
+	const tdFP = document.createElement("td")
+	const tdAcumulada = document.createElement("td")
+	const tdAcumuladaP = document.createElement("td")
 	td.innerHTML = variavel;
 	tdFP.innerHTML = "Frequência %"
 	tdd.innerHTML = "Frequência"
@@ -325,7 +332,7 @@ function criaTabelaOriginal(){
 
 	table.appendChild(tr)
 
-	let corpo = document.getElementById("tabelas")
+	const corpo = document.getElementById("tabelas")
 	corpo.appendChild(table)
 
 	return document.getElementById("tabela"+indiceTabela)
@@ -364,26 +371,36 @@ function Frequencias(array){
 google.charts.load('current', {'packages':['corechart']});
 		
 function desenharGrafico(array){
-	let tipo = document.getElementById('tipo')
-	let arrayGrafico = []
-	let visualizarGrafico = document.getElementById('graficos')
+	const tipo = document.getElementById('tipo')
+	const arrayGrafico = []
+	const visualizarGrafico = document.getElementById('graficos')
 	visualizarGrafico.innerHTML = ""
 	let grafico = new google.visualization.DataTable();
 	grafico.addColumn('string', 'Nome Dado')
 	grafico.addColumn('number', 'Valor')
 
+	const opcoes = {
+		title : mudaNomeVariavel().innerHTML,
+		heigth : 200,
+		whidth:300,
+		is3D : true,
+		legend: 'labeled',
+		slices:{2:{offset:0.2}}
+	}
+
 	for(let i = 0; i < array.length; i++){
 		arrayGrafico[i] = [array[i].dado,array[i].frequenciaPorcentagem]
 	}
 
-	grafico.addRows(arrayGrafico)
-	console.log(tipo.value)
+	grafico.addRows(arrayGrafico)	
+	
+	console.log(mudaNomeVariavel())
 	if(tipo.value == "discreta"){
-		let pizza = new google.visualization.ColumnChart(document.getElementById('graficos'))
-		pizza.draw(grafico)
-	}else{
+		let column = new google.visualization.ColumnChart(document.getElementById('graficos'))
+		column.draw(grafico,opcoes)
+	}else if(tipo.value != "continua"){
 		let pizza = new google.visualization.PieChart(document.getElementById('graficos'))
-		pizza.draw(grafico)
+		pizza.draw(grafico,opcoes)
 	}
 	
 }
