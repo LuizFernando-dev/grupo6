@@ -1,37 +1,96 @@
 var objetosOrdinal = []
 var indiceTabelaGlobal = 0
 
-var ObjetoDado = function(dado, quant, indice){
+class ObjetoDado{
+	dado
+	quantidade
+	indice
+	frequenciaPorcentagem
+	frequenciaAcumulada
+	acumuladaP
+
+	criaObjetoDado(dado, quant, indice){
 		this.dado = dado
 		this.quantidade = quant
 		this.indice = indice
 		this.frequenciaPorcentagem = 0
-		this.freqAcumulada = 0
+		this.frequenciaAcumulada = 0
 		this.acumuladaP = 0
 	}
+
+	calculaQuantidade(objts){
+		let cont = 0
+		const objts2 = []
+
+		for(let i = 0; i < objts.length; i++){
+			cont++
+			let boolean = true
+			for(let j = cont; j < objts.length; j++){
+				if(objts[i].dado == objts[j].dado ){
+					objts[i].quantidade = objts[i].quantidade + 1
+				}
+			}
+
+			if(objts2.length != 0){
+				for(let n = 0; n < objts2.length; n++){
+					if(objts2[n].dado == objts[i].dado){
+						boolean = false
+					}
+				}	
+
+			}
+
+			if(boolean){
+				objts2.push(objts[i])
+			}
+		}
+
+		objts2.pop()
+		
+		return objts2
+	}
+
+	calculaFrequenciaPorcente(array, ordinal){
+		let quantidade = 0
+
+		for(let i = 0; i < array.length; i++){
+			quantidade += array[i].quantidade
+		}
+
+		this.frequenciaPorcentagem = (this.quantidade * 100)/quantidade
+
+		for(let i = 0; i < array.length; i++){
+			if(array[i].dado == this.dado && i > 0){
+				this.frequenciaAcumulada = array[i - 1].frequenciaAcumulada + this.quantidade
+				break
+			}
+		}
+
+		if(this.frequenciaAcumulada <= 0){
+			this.frequenciaAcumulada = this.quantidade
+		}
+
+		this.acumuladaP = (this.frequenciaAcumulada*100)/quantidade
+
+		if(ordinal == "ordinal")return array
+		
+	}
+}
 
 function calcular() {
 	const variavel = document.getElementById("variavel")
 	let tipo = document.getElementById("tipo")
 
-	const dados = document.querySelector("#dados")
-	const valores = dados.value
+	const dados = document.querySelector("#dados").value.split(',')
 
-	const dadosArray = valores.split(",")
+	let objetos = criaObjetos(dados, tipo)
 
-	let arrayObjetos = criaObjetos(dadosArray)
-
-	if(tipo.value == "continua"){
-		tabelaContinua(arrayObjetos)
-	}else{
-		let objetos = quantidade(arrayObjetos)
-		objetos = Frequencias(objetos)
 		if(tipo.value == "ordinal"){
 			objetos = arrumaIndice(objetos)
 			objetosOrdinal = objetos
 			tabelaOrdinal()
 			google.charts.setOnLoadCallback(desenharGrafico(objetos))
-		}else{
+		}else if (tipo.value != "continua"){
 			objetos = mudaOrdem(tipo, objetos)
 			arrayGrafico = objetos
 			criaTabela(objetos)
@@ -39,58 +98,37 @@ function calcular() {
 		}
 
 		objetosOrdinal = objetos
-	}
 	
 }
 
-function criaObjetos(dados){
-	const objetos = []
+function criaObjetos(dados, tipo){
+	let objetos = []
 	for(let i = 0; i <= dados.length; i++){
-		objetos.push(new ObjetoDado(dados[i], 1, i))
+		const obj = new ObjetoDado
+		obj.criaObjetoDado(dados[i], 1, i)
+		objetos.push(obj)
+	}
+
+	console.log(tipo.value)
+	
+	if(tipo.value == "continua"){
+		tabelaContinua(objetos)
+		return
+	}
+
+	objetos = objetos[0].calculaQuantidade(objetos)
+
+	for(let j = 0; j < objetos.length; j++){
+		objetos[j].calculaFrequenciaPorcente(objetos)
 	}
 
 	return objetos
-
 }
 
-function quantidade(objts){
-	let cont = 0
-	const objts2 = []
+//Criação e Ordenaçao das tabelas e gráficos
 
-	for(let i = 0; i < objts.length; i++){
-		cont++
-		let boolean = true
-		for(let j = cont; j < objts.length; j++){
-			if(objts[i].dado == objts[j].dado ){
-				objts[i].quantidade = objts[i].quantidade + 1
-			}
-		}
-
-		if(objts2.length != 0){
-			for(let n = 0; n < objts2.length; n++){
-				if(objts2[n].dado == objts[i].dado){
-					boolean = false
-				}
-			}	
-
-		}
-
-		if(boolean){
-			objts2.push(objts[i])
-		}
-	}
-
-	objts2.pop()
-
-	objts = objts2
-	
-	return objts2
-}
 
 function criaTabela(array){
-	//testando gráficos
-	
-	//testando gráficos
 	const tabela = criaTabelaOriginal()
 	const nomeVariavel = mudaNomeVariavel()
 	tabela.setAttribute("style", "display: ;")
@@ -105,8 +143,9 @@ function criaTabela(array){
 
 		td.innerHTML = array[i].dado
 		tdd.innerHTML = array[i].quantidade
-		tdFP.innerHTML = array[i].frequenciaPorcentagem.toFixed(1)
-		freqAcumulada.innerHTML = array[i].freqAcumulada
+		array[i].calculaFrequenciaPorcente(array)
+		tdFP.innerHTML = array[i].frequenciaPorcentagem
+		freqAcumulada.innerHTML = array[i].frequenciaAcumulada
 		acumuladaP.innerHTML = array[i].acumuladaP.toFixed(1)
 		
 	
@@ -252,7 +291,7 @@ function tabelaOrdinal(){
 		tdd.innerHTML = objetosOrdinal[i].quantidade
 		input.value = objetosOrdinal[i].indice + 1
 		tdFP.innerHTML = objetosOrdinal[i].frequenciaPorcentagem.toFixed(1)
-		freqAcumulada.innerHTML = objetosOrdinal[i].freqAcumulada
+		freqAcumulada.innerHTML = objetosOrdinal[i].frequenciaAcumulada
 		acumuladaP.innerHTML = objetosOrdinal[i].acumuladaP
 		
 		tr.appendChild(td)
@@ -267,6 +306,7 @@ function tabelaOrdinal(){
 
 	const button = document.createElement("button")
 	button.setAttribute("Onclick", "ordenando()")
+	button.setAttribute("class", "botao-ordenar")
 	button.innerHTML = "Ordenar"
 	tabela.appendChild(button)
 }
@@ -275,15 +315,17 @@ function ordenando(){
 	for(let i = 0; i < objetosOrdinal.length; i++){
 		const valor = document.getElementById("pos"+indiceTabelaGlobal+ i)
 		objetosOrdinal[i].indice = valor.value
+		objetosOrdinal[i].frequenciaAcumulada = objetosOrdinal[i].quantidade
 	}
 
 	objetosOrdinal.sort((a, b) => a.indice - b.indice)
+	
 
 	for(let i = 0; i < objetosOrdinal.length; i++){
 		objetosOrdinal[i].indice = i 
+		objetosOrdinal[i].calculaFrequenciaPorcente(objetosOrdinal)
 	} 
 
-	Frequencias(objetosOrdinal)
 	tabelaOrdinal()
 	google.charts.setOnLoadCallback(desenharGrafico(objetosOrdinal))
 
@@ -323,6 +365,7 @@ function criaTabelaOriginal(){
 	tdAcumulada.innerHTML = "F. Acumulada"
 	tdAcumuladaP.innerHTML = "Acumulada %"
 	tr.setAttribute("id", "tabelaCorpo"+indiceTabela)
+	tr.setAttribute("class", "coloreTopoTabela")
 
 	tr.appendChild(td)
 	tr.appendChild(tdd)
@@ -346,27 +389,6 @@ function arrumaIndice(array){
 	return array
 }
 
-
-function Frequencias(array){
-	let quantidade = 0
-
-	for(let i = 0; i < array.length; i++){
-		quantidade += array[i].quantidade
-	}
-
-	for(let i = 0; i < array.length; i++){
-		array[i].frequenciaPorcentagem = (array[i].quantidade * 100)/quantidade
-		if(i > 0){
-			array[i].freqAcumulada = array[i-1].freqAcumulada + array[i].quantidade
-		}else{
-			array[i].freqAcumulada = array[i].quantidade
-		}
-
-		array[i].acumuladaP = (array[i].freqAcumulada*100)/quantidade
-	}
-
-	return array
-}
 
 google.charts.load('current', {'packages':['corechart']});
 		
@@ -394,7 +416,6 @@ function desenharGrafico(array){
 
 	grafico.addRows(arrayGrafico)	
 	
-	console.log(mudaNomeVariavel())
 	if(tipo.value == "discreta"){
 		let column = new google.visualization.ColumnChart(document.getElementById('graficos'))
 		column.draw(grafico,opcoes)

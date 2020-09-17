@@ -11,6 +11,10 @@ h1{
     background-color: #09cee2;
 }
 
+.coloreTopoTabela{
+    background-color: #09cee2;
+}
+
 .container{
     width: 60%;
     margin-top: 10%;
@@ -62,5 +66,19 @@ h1{
 }
 
 .botao:hover{
+    background-color: rgb(127, 115, 233);
+}
+
+.botao-ordenar{
+    background: rgb(26, 49, 114) no-repeat;
+    border-radius: 10px;
+    padding: 4px;
+    font-size: 18px;
+    color: white;
+    color:#999;
+    margin-bottom: 20px;
+}
+
+.botao-ordenar:hover{
     background-color: rgb(127, 115, 233);
 }
