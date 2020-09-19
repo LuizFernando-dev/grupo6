@@ -1,5 +1,14 @@
 var objetosOrdinal = []
 var indiceTabelaGlobal = 0
+var mmm = document.getElementById('mmm')
+
+var mediaModaMediana = function(media, moda, mediana){
+		this.media = media
+		this.moda = moda
+		this.mediana = mediana
+}
+
+var mediana = new mediaModaMediana(0,0,0);
 
 class ObjetoDado{
 	dado
@@ -8,6 +17,9 @@ class ObjetoDado{
 	frequenciaPorcentagem
 	frequenciaAcumulada
 	acumuladaP
+	media
+	moda
+	mediana
 
 	criaObjetoDado(dado, quant, indice){
 		this.dado = dado
@@ -45,6 +57,17 @@ class ObjetoDado{
 			}
 		}
 
+		//media moda mediana
+		let valorModa = 0
+		for(let i = 0; i < objts2.length; i++){
+			if(objts2[i].quantidade > valorModa){
+				valorModa = objts2[i].quantidade
+				mediana.moda = objts2[i].dado
+			}
+		}
+
+		//media moda mediana
+
 		objts2.pop()
 		
 		return objts2
@@ -72,6 +95,40 @@ class ObjetoDado{
 
 		this.acumuladaP = (this.frequenciaAcumulada*100)/quantidade
 
+		//media moda mediana
+		let arrayMediana = dados.value.split(',')
+		if(array[array.length - 1].frequenciaAcumulada % 2 == 0){
+			const valor1 = parseInt((array[array.length - 1].frequenciaAcumulada)/2)
+			if(arrayMediana[valor1] == arrayMediana[valor1 + 1]){
+				mediana.mediana = arrayMediana[valor1]
+				if(tipo.value == "discreta"){
+					let soma = 0
+					for(let i = 0; i < array.length; i++){
+						soma += array[i].dado * array[i].quantidade
+					}
+					mediana.media = soma/array[array.length - 1].frequenciaAcumulada
+					console.log(`soma ${soma} total ${array.length - 1} media ${mediana.media}`)
+				}
+			}else if(tipo.value == "discreta"){
+				mediana.mediana = (Number(arrayMediana[valor1]) + Number(arrayMediana[valor1+1]))/2
+				console.log("teste" + mediana.mediana)
+				//calcular a media
+				let soma = 0
+				for(let i = 0; i < array.length; i++){
+					soma += array[i].dado * array[i].quantidade
+				}
+				console.log(soma)
+				mediana.media = soma/(array.length - 1)
+			}else{
+				mediana.mediana = `${arrayMediana[valor1]} e ${arrayMediana[valor1+1]}`
+			} 
+		}else{
+			const valor = parseInt((array[array.length - 1].frequenciaAcumulada)/2)
+			mediana.mediana = arrayMediana[valor]
+		}
+
+		//media moda mediana
+
 		if(ordinal == "ordinal")return array
 		
 	}
@@ -79,7 +136,7 @@ class ObjetoDado{
 
 function calcular() {
 	const variavel = document.getElementById("variavel")
-	let tipo = document.getElementById("tipo")
+	const tipo = document.getElementById("tipo")
 
 	const dados = document.querySelector("#dados").value.split(',')
 
@@ -103,13 +160,12 @@ function calcular() {
 
 function criaObjetos(dados, tipo){
 	let objetos = []
+	
 	for(let i = 0; i <= dados.length; i++){
 		const obj = new ObjetoDado
 		obj.criaObjetoDado(dados[i], 1, i)
 		objetos.push(obj)
 	}
-
-	console.log(tipo.value)
 	
 	if(tipo.value == "continua"){
 		tabelaContinua(objetos)
@@ -157,6 +213,19 @@ function criaTabela(array){
 
 		tabela.appendChild(tr)
 	}
+
+	//media moda mediana
+	let p = document.createElement('p')
+	if(tipo.value == "discreta"){
+		p.innerHTML = `<strong>Média:</strong> ${mediana.media} <strong>Moda:</strong>
+		 ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana}`
+
+	}else{
+		p.innerHTML = `<strong>Moda:</strong> ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana}`
+	}
+	
+	mmm.innerHTML = ''
+	mmm.appendChild(p)
 }
 
 function mudaOrdem(ordem,array){
@@ -175,6 +244,14 @@ function tabelaContinua(array){
 	let menor = 99999
 	let frequenciaAcumulada = 0
 	const graficoContinua = []
+	const arrayMedia = []
+	let objetoMedia  = function(intervaloMedia, frequenciaMedia,fac,inferior,superior){
+		this.intervaloMedia = intervaloMedia
+		this.frequenciaMedia = frequenciaMedia
+		this.frequenciaMediaAcumulada = fac
+		this.inferior = inferior
+		this.superior = superior
+	}
 	array.pop()
 	for(let i = 0; i < array.length; i++){
 		if(array[i].dado > maior){
@@ -242,6 +319,8 @@ function tabelaContinua(array){
 		frequenciaAcumulada += frequencia
 
 		td.innerHTML = valor1 + "|--" + valor2
+		let intervaloMedia = (Number(valor1) + valor2)/2
+		arrayMedia.push(new objetoMedia(intervaloMedia,frequencia,frequenciaAcumulada,Number(valor1),valor2))
 		tdd.innerHTML = frequencia
 
 		//grafico
@@ -262,8 +341,62 @@ function tabelaContinua(array){
 		tabela.appendChild(tr)
 	}
 
+	///////CALCULANDO A MÉDIA PONDERADA SIMPLES//////////
+	let divisao = 0
+	let moda = 0
+	for(let i = 0; i < arrayMedia.length; i++){
+		divisao += arrayMedia[i].intervaloMedia * arrayMedia[i].frequenciaMedia
+		if(arrayMedia[i].frequenciaMedia > moda){
+			moda = arrayMedia[i].frequenciaMedia
+			mediana.moda = i
+		}
+	}
+
+	mediana.media = divisao/frequenciaAcumulada
+	mediana.moda = arrayMedia[mediana.moda].intervaloMedia
+	console.log(`media: ${mediana.media} moda: ${mediana.moda}`)
+	console.log(arrayMedia)
+
+	//CALCULANDO A MEDIANA SIMPLES///////////
+	let medianaContinua1 = 0
+	if(arrayMedia[arrayMedia.length - 1].frequenciaMediaAcumulada % 2 == 0){
+		medianaContinua1 = arrayMedia[arrayMedia.length - 1].frequenciaMediaAcumulada/2
+	}else{
+		medianaContinua1 = parseInt(arrayMedia[arrayMedia.length - 1].frequenciaMediaAcumulada/2)
+	}
+
+	let calculoLinha = 0
+	for(let i = 0; i < arrayMedia.length; i++){
+		if(medianaContinua1 >= arrayMedia[i].frequenciaMediaAcumulada){
+			calculoLinha = i 
+		}
+	}
+
+	let calculoInferior = 0
+	let calculoFrequencia = 0
+	let calculoFAC = 0
+	
+	calculoInferior = arrayMedia[calculoLinha].inferior
+	calculoFrequencia = arrayMedia[calculoLinha].frequenciaMedia
+	console.log(calculoFrequencia)
+	calculoFAC = arrayMedia[Number(calculoLinha) - 1].frequenciaMediaAcumulada
+	
+	let medianaContinua = calculoInferior + 
+	(((medianaContinua1 - calculoFAC)/arrayMedia[calculoLinha].frequenciaMedia) * intervalo2)
+	console.log(`iinferior ${calculoInferior} metade ${medianaContinua1} freqACAnterior ${calculoFAC}
+	frequencia simples ${arrayMedia[calculoLinha].frequenciaMedia} intervalo ${intervalo2}`)
+	mediana.mediana = medianaContinua
+
+	let p = document.createElement('p')
+	p.innerHTML =`<strong>Média:</strong> ${mediana.media} 
+	<strong>Moda:</strong> ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana}`
+
+	mmm.innerHTML =  ''
+	mmm.appendChild(p)
 	desenharGrafico(graficoContinua)
 }
+
+//////////////////////FIMM DA TABELA CONTINUA //////////////
 
 function tabelaOrdinal(){
 	const tabela = criaTabelaOriginal()
@@ -273,6 +406,7 @@ function tabelaOrdinal(){
 	tdPosicao.innerHTML = "Posição"
 	const tabelaCorpo = document.getElementById("tabelaCorpo"+indiceTabelaGlobal)
 	tabelaCorpo.appendChild(tdPosicao)
+	const p = document.createElement('p')
 
 	for(let i = 0; i < objetosOrdinal.length; i++){
 		const tr = document.createElement("tr")
@@ -309,6 +443,9 @@ function tabelaOrdinal(){
 	button.setAttribute("class", "botao-ordenar")
 	button.innerHTML = "Ordenar"
 	tabela.appendChild(button)
+	p.innerHTML = `<strong>Moda:</strong> ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana}`
+	mmm.innerHTML = ''
+	mmm.appendChild(p)
 }
 
 function ordenando(){
