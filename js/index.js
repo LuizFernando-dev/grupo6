@@ -17,9 +17,6 @@ class ObjetoDado{
 	frequenciaPorcentagem
 	frequenciaAcumulada
 	acumuladaP
-	media
-	moda
-	mediana
 
 	criaObjetoDado(dado, quant, indice){
 		this.dado = dado
@@ -80,7 +77,9 @@ class ObjetoDado{
 			quantidade += array[i].quantidade
 		}
 
-		this.frequenciaPorcentagem = (this.quantidade * 100)/quantidade
+		let valorParaPorcentagem = ((this.quantidade * 100)/quantidade).toFixed(1)
+		this.frequenciaPorcentagem = Number(valorParaPorcentagem)
+		console.log(this.frequenciaPorcentagem)
 
 		for(let i = 0; i < array.length; i++){
 			if(array[i].dado == this.dado && i > 0){
@@ -93,7 +92,7 @@ class ObjetoDado{
 			this.frequenciaAcumulada = this.quantidade
 		}
 
-		this.acumuladaP = (this.frequenciaAcumulada*100)/quantidade
+		this.acumuladaP = ((this.frequenciaAcumulada*100)/quantidade).toFixed(1)
 
 		//media moda mediana
 		let arrayMediana = dados.value.split(',')
@@ -110,15 +109,14 @@ class ObjetoDado{
 					console.log(`soma ${soma} total ${array.length - 1} media ${mediana.media}`)
 				}
 			}else if(tipo.value == "discreta"){
-				mediana.mediana = (Number(arrayMediana[valor1]) + Number(arrayMediana[valor1+1]))/2
+				mediana.mediana = ((Number(arrayMediana[valor1]) + Number(arrayMediana[valor1+1]))/2).toFixed(1)
 				console.log("teste" + mediana.mediana)
 				//calcular a media
 				let soma = 0
 				for(let i = 0; i < array.length; i++){
 					soma += array[i].dado * array[i].quantidade
 				}
-				console.log(soma)
-				mediana.media = soma/(array.length - 1)
+				mediana.media = (soma/(array.length - 1)).toFixed(1)
 			}else{
 				mediana.mediana = `${arrayMediana[valor1]} e ${arrayMediana[valor1+1]}`
 			} 
@@ -202,7 +200,7 @@ function criaTabela(array){
 		array[i].calculaFrequenciaPorcente(array)
 		tdFP.innerHTML = array[i].frequenciaPorcentagem
 		freqAcumulada.innerHTML = array[i].frequenciaAcumulada
-		acumuladaP.innerHTML = array[i].acumuladaP.toFixed(1)
+		acumuladaP.innerHTML = array[i].acumuladaP
 		
 	
 		tr.appendChild(td)
@@ -245,6 +243,7 @@ function tabelaContinua(array){
 	let frequenciaAcumulada = 0
 	const graficoContinua = []
 	const arrayMedia = []
+
 	let objetoMedia  = function(intervaloMedia, frequenciaMedia,fac,inferior,superior){
 		this.intervaloMedia = intervaloMedia
 		this.frequenciaMedia = frequenciaMedia
@@ -254,14 +253,15 @@ function tabelaContinua(array){
 	}
 	array.pop()
 	for(let i = 0; i < array.length; i++){
-		if(array[i].dado > maior){
-			maior = array[i].dado
+		if(Number(array[i].dado) > maior){
+			maior = Number(array[i].dado)
 		}
 
-		if(array[i].dado <= menor){
-			menor = array[i].dado
+		if(Number(array[i].dado) <= menor){
+			menor = Number(array[i].dado)
 		}
 	}
+
 
 	let amplitude = maior - menor
 	amplitude += 1
@@ -293,6 +293,7 @@ function tabelaContinua(array){
 
 	let intervalo2 = intervalo
 	let valor1 = menor
+	
 	for(let i = 1; i <= linha; i++){
 		let tr = document.createElement("tr")
 		let td = document.createElement("td")
@@ -320,16 +321,16 @@ function tabelaContinua(array){
 
 		td.innerHTML = valor1 + "|--" + valor2
 		let intervaloMedia = (Number(valor1) + valor2)/2
-		arrayMedia.push(new objetoMedia(intervaloMedia,frequencia,frequenciaAcumulada,Number(valor1),valor2))
+		arrayMedia.push(new objetoMedia(intervaloMedia,frequencia,Number(frequenciaAcumulada),Number(valor1),valor2))
 		tdd.innerHTML = frequencia
 
 		//grafico
-		graficoContinua.push([Number(valor1),valor2])
+		graficoContinua.push([`${valor1}|--${valor2}`,Number(valor1),valor2])
 
 		valor1 = valor2
 		tdFP.innerHTML = ((frequencia * 100)/total).toFixed(1)
 		freqAcumulada.innerHTML = frequenciaAcumulada
-		acumuladaP.innerHTML = (frequenciaAcumulada*100)/total
+		acumuladaP.innerHTML = ((frequenciaAcumulada*100)/total).toFixed(1)
 
 
 		tr.appendChild(td)
@@ -352,7 +353,7 @@ function tabelaContinua(array){
 		}
 	}
 
-	mediana.media = divisao/frequenciaAcumulada
+	mediana.media = (divisao/frequenciaAcumulada).toFixed(1)
 	mediana.moda = arrayMedia[mediana.moda].intervaloMedia
 	console.log(`media: ${mediana.media} moda: ${mediana.moda}`)
 	console.log(arrayMedia)
@@ -367,25 +368,25 @@ function tabelaContinua(array){
 
 	let calculoLinha = 0
 	for(let i = 0; i < arrayMedia.length; i++){
-		if(medianaContinua1 >= arrayMedia[i].frequenciaMediaAcumulada){
-			calculoLinha = i 
+		if(medianaContinua1 > Number(arrayMedia[i].frequenciaMediaAcumulada)){
+			calculoLinha += 1
 		}
 	}
-
+	
 	let calculoInferior = 0
 	let calculoFrequencia = 0
 	let calculoFAC = 0
 	
 	calculoInferior = arrayMedia[calculoLinha].inferior
 	calculoFrequencia = arrayMedia[calculoLinha].frequenciaMedia
-	console.log(calculoFrequencia)
+	
 	calculoFAC = arrayMedia[Number(calculoLinha) - 1].frequenciaMediaAcumulada
 	
 	let medianaContinua = calculoInferior + 
 	(((medianaContinua1 - calculoFAC)/arrayMedia[calculoLinha].frequenciaMedia) * intervalo2)
 	console.log(`iinferior ${calculoInferior} metade ${medianaContinua1} freqACAnterior ${calculoFAC}
 	frequencia simples ${arrayMedia[calculoLinha].frequenciaMedia} intervalo ${intervalo2}`)
-	mediana.mediana = medianaContinua
+	mediana.mediana = medianaContinua.toFixed(1)
 
 	let p = document.createElement('p')
 	p.innerHTML =`<strong>Média:</strong> ${mediana.media} 
@@ -393,7 +394,7 @@ function tabelaContinua(array){
 
 	mmm.innerHTML =  ''
 	mmm.appendChild(p)
-	desenharGrafico(graficoContinua)
+	desenharGraficoContinua(graficoContinua)
 }
 
 //////////////////////FIMM DA TABELA CONTINUA //////////////
@@ -424,7 +425,7 @@ function tabelaOrdinal(){
 		td.innerHTML = objetosOrdinal[i].dado
 		tdd.innerHTML = objetosOrdinal[i].quantidade
 		input.value = objetosOrdinal[i].indice + 1
-		tdFP.innerHTML = objetosOrdinal[i].frequenciaPorcentagem.toFixed(1)
+		tdFP.innerHTML = objetosOrdinal[i].frequenciaPorcentagem
 		freqAcumulada.innerHTML = objetosOrdinal[i].frequenciaAcumulada
 		acumuladaP.innerHTML = objetosOrdinal[i].acumuladaP
 		
@@ -553,12 +554,41 @@ function desenharGrafico(array){
 
 	grafico.addRows(arrayGrafico)	
 	
-	if(tipo.value == "discreta"){
+	if(tipo.value == "discreta" || tipo.value == "continua"){
 		let column = new google.visualization.ColumnChart(document.getElementById('graficos'))
 		column.draw(grafico,opcoes)
 	}else if(tipo.value != "continua"){
 		let pizza = new google.visualization.PieChart(document.getElementById('graficos'))
 		pizza.draw(grafico,opcoes)
 	}
+
+}
+
+function desenharGraficoContinua(array){
+	const tipo = document.getElementById('tipo')
+	const arrayGrafico = []
+	const visualizarGrafico = document.getElementById('graficos')
+	visualizarGrafico.innerHTML = ""
+	let grafico = new google.visualization.DataTable();
+	grafico.addColumn('string', 'Nome Dado')
+	grafico.addColumn('number', 'Valor 1')
+	grafico.addColumn('number', 'valor 2')
 	
+	const opcoes = {
+		title : mudaNomeVariavel().innerHTML,
+		heigth : 200,
+		whidth:300,
+		is3D : true,
+		legend: 'labeled',
+		slices:{2:{offset:0.2}}
+
+		}
+	
+	
+	grafico.addRows(array)	
+		
+		
+	let column = new google.visualization.ColumnChart(document.getElementById('graficos'))
+	column.draw(grafico,opcoes)
+
 }
