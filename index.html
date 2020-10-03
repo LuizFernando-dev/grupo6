@@ -18,13 +18,12 @@
 			<p>Amostra<input type="radio" name="opcao" value="amostra"></p>
 			<p>População<input type="radio" name="opcao" value="populacao"></body></p>
 
-			<h4>Escolha o tipo da variavel:</h4> 
-			<select id="tipo">
-				<option value="palavra">nominal</option>
-				<option value="ordinal">ordinal</option>
-				<option value="discreta">discreta</option>
-				<option value="continua">continua</option>
-			</select><br>
+			<h4>Escolha o tipo da variavel:<select id="tipo">
+				<option value="palavra">Nominal</option>
+				<option value="ordinal">Ordinal</option>
+				<option value="discreta">Discreta</option>
+				<option value="continua">Continua</option>
+			</select><br></h4>
 
 
 			<h4>Nome Da Variavel: <input type="text" name="variavel" id="variavel"></h4><br> <!--nome da variavél: se é profissão, idade, salário... etc -->
@@ -40,7 +39,19 @@
 
 				******A ORGANIZAÇÃO DOS DADOS DEPENDE DO TIPO DE VARIVEL ESCOLHIDA!! *******************
 			-->
-		<button onclick="calcular()" class="botao">calcular</button>
+			<div>
+				<h4>Escolha a medida separatriz: <select id="separatriz">
+					<option value="quartil">Quartil</option>
+					<option value="quintil">Quintil</option>
+					<option value="decil">Decil</option>
+					<option value="porcentil">Porcentil</option>
+				</select>(K):<input type="number" value="1" style="width: 40px;" id="k">
+				<button class="botao-ordenar" style="display: none;">Calcular</button></h4>
+				<div id="separatrizes">
+					
+				</div>
+			</div>
+		<button onclick="calcular()" class="botao" >calcular</button>
 		
 		<div id="tabelas">
 			<input type="hidden" name="" id="indice" value="0">

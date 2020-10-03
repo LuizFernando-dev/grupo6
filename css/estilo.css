@@ -82,3 +82,8 @@ h1{
 .botao-ordenar:hover{
     background-color: rgb(127, 115, 233);
 }
+
+.alinhaTexto{
+    text-align: center;
+    font-family: 'sans-serif';
+}

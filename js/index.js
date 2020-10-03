@@ -79,7 +79,6 @@ class ObjetoDado{
 
 		let valorParaPorcentagem = ((this.quantidade * 100)/quantidade).toFixed(1)
 		this.frequenciaPorcentagem = Number(valorParaPorcentagem)
-		console.log(this.frequenciaPorcentagem)
 
 		for(let i = 0; i < array.length; i++){
 			if(array[i].dado == this.dado && i > 0){
@@ -106,11 +105,9 @@ class ObjetoDado{
 						soma += array[i].dado * array[i].quantidade
 					}
 					mediana.media = soma/array[array.length - 1].frequenciaAcumulada
-					console.log(`soma ${soma} total ${array.length - 1} media ${mediana.media}`)
 				}
 			}else if(tipo.value == "discreta"){
 				mediana.mediana = ((Number(arrayMediana[valor1]) + Number(arrayMediana[valor1+1]))/2).toFixed(1)
-				console.log("teste" + mediana.mediana)
 				//calcular a media
 				let soma = 0
 				for(let i = 0; i < array.length; i++){
@@ -137,6 +134,7 @@ function calcular() {
 	const tipo = document.getElementById("tipo")
 
 	const dados = document.querySelector("#dados").value.split(',')
+	medidasSeparatrizes(dados)
 
 	let objetos = criaObjetos(dados, tipo)
 
@@ -591,4 +589,69 @@ function desenharGraficoContinua(array){
 	let column = new google.visualization.ColumnChart(document.getElementById('graficos'))
 	column.draw(grafico,opcoes)
 
+}
+
+function medidasSeparatrizes(objetos){
+	if(tipo.value == 'discreta'){
+		objetos = objetos.map(item => Number(item))
+	}
+	const medidaTipo = document.getElementById('separatriz')
+	const separatrizes = document.getElementById('separatrizes')
+	separatrizes.innerHTML = ""
+	const valorSeparatriz = document.createElement('p')
+	valorSeparatriz.setAttribute('style','font-size:20px;')
+	valorSeparatriz.setAttribute('class','alinhaTexto')
+	let k = document.getElementById('k')
+	let mult = 0
+	if(medidaTipo.value == 'quartil'){
+		mult = 4
+	}else if(medidaTipo.value == 'quintil'){
+		mult = 5
+	}else if(medidaTipo.value == 'decil'){
+		mult = 10
+	}else if(medidaTipo.value == 'porcentil'){
+		mult = 100
+	}
+	k.value = calculaTipoSeparatriz(mult,k.value)
+	if(tipo.value != 'continua'){
+		const tamanhoArray = objetos.length - 1
+		let posicaoQuartil = Math.round(tamanhoArray/mult)
+		if(posicaoQuartil < 1){
+			posicaoQuartil = 1
+		}
+		posicaoQuartil *= k.value
+		if(posicaoQuartil > tamanhoArray){
+			posicaoQuartil = tamanhoArray
+		}
+		if(posicaoQuartil%mult == 0){
+			let valorQuartil = objetos[posicaoQuartil]
+			if(tipo.value == 'discreta'){
+				const pos2 =  objetos[posicaoQuartil + 1]
+				 valorQuartil =  ((objetos[posicaoQuartil] + pos2)/2).toFixed(2)
+			}else{
+				const pos2 = objetos[posicaoQuartil + 1]
+				if(objetos[posicaoQuartil] != pos2){
+					valorQuartil = `${objetos[posicaoQuartil]} e ${pos2}`
+				}
+			}
+			valorSeparatriz.innerHTML = `${(100/mult)*k.value}% ${medidaTipo.value} K${k.value}=
+			 	(<strong>${valorQuartil}</strong>)`
+		}else{
+			const valorQuartil  =  objetos[posicaoQuartil]
+			console.log(toString(objetos[posicaoQuartil]))
+			valorSeparatriz.innerHTML = `${(100/mult)*k.value}% ${medidaTipo.value} K${k.value}=
+			 (<strong>${valorQuartil}</strong>)`
+		}
+	}
+
+	separatrizes.appendChild(valorSeparatriz)
+}
+
+function calculaTipoSeparatriz(mult,k){
+		if(k <= 0 ){
+			 k = 1
+		}else if(k > mult){
+			k = mult	
+		}
+		return k
 }
