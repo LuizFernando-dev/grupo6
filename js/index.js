@@ -1,6 +1,8 @@
 var objetosOrdinal = []
 var indiceTabelaGlobal = 0
 var mmm = document.getElementById('mmm')
+var raizDesvio = 0
+var desvioPadraoPorcentagem = 0
 
 var mediaModaMediana = function(media, moda, mediana){
 		this.media = media
@@ -104,7 +106,7 @@ class ObjetoDado{
 					for(let i = 0; i < array.length; i++){
 						soma += array[i].dado * array[i].quantidade
 					}
-					mediana.media = soma/array[array.length - 1].frequenciaAcumulada
+					mediana.media = (soma/array[array.length - 1].frequenciaAcumulada).toFixed(2)
 				}
 			}else if(tipo.value == "discreta"){
 				mediana.mediana = ((Number(arrayMediana[valor1]) + Number(arrayMediana[valor1+1]))/2).toFixed(1)
@@ -124,6 +126,7 @@ class ObjetoDado{
 
 		//media moda mediana
 
+
 		if(ordinal == "ordinal")return array
 		
 	}
@@ -134,9 +137,16 @@ function calcular() {
 	const tipo = document.getElementById("tipo")
 
 	const dados = document.querySelector("#dados").value.split(',')
-	medidasSeparatrizes(dados)
+	//medidasSeparatrizes(dados)
 
 	let objetos = criaObjetos(dados, tipo)
+
+	//desvio Padrao
+	
+
+	if(tipo.value != 'continua'){
+		calculaPorcentil(objetos)
+	}
 
 		if(tipo.value == "ordinal"){
 			objetos = arrumaIndice(objetos)
@@ -213,8 +223,10 @@ function criaTabela(array){
 	//media moda mediana
 	let p = document.createElement('p')
 	if(tipo.value == "discreta"){
+		calculaDesvioPadrao(array)
 		p.innerHTML = `<strong>Média:</strong> ${mediana.media} <strong>Moda:</strong>
-		 ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana}`
+		 ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana} <strong>DesvioPadrão</strong>
+		  ${raizDesvio.toFixed(2)}<strong> DP:</strong> ${desvioPadraoPorcentagem.toFixed(1)}%`
 
 	}else{
 		p.innerHTML = `<strong>Moda:</strong> ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana}`
@@ -353,9 +365,7 @@ function tabelaContinua(array){
 
 	mediana.media = (divisao/frequenciaAcumulada).toFixed(1)
 	mediana.moda = arrayMedia[mediana.moda].intervaloMedia
-	console.log(`media: ${mediana.media} moda: ${mediana.moda}`)
-	console.log(arrayMedia)
-
+	
 	//CALCULANDO A MEDIANA SIMPLES///////////
 	let medianaContinua1 = 0
 	if(arrayMedia[arrayMedia.length - 1].frequenciaMediaAcumulada % 2 == 0){
@@ -363,6 +373,10 @@ function tabelaContinua(array){
 	}else{
 		medianaContinua1 = parseInt(arrayMedia[arrayMedia.length - 1].frequenciaMediaAcumulada/2)
 	}
+
+	medidaSeparatrizContinua(arrayMedia, intervalo2)
+	//desvioPadrao
+	calculaDesvioPadrao(arrayMedia)
 
 	let calculoLinha = 0
 	for(let i = 0; i < arrayMedia.length; i++){
@@ -382,13 +396,15 @@ function tabelaContinua(array){
 	
 	let medianaContinua = calculoInferior + 
 	(((medianaContinua1 - calculoFAC)/arrayMedia[calculoLinha].frequenciaMedia) * intervalo2)
-	console.log(`iinferior ${calculoInferior} metade ${medianaContinua1} freqACAnterior ${calculoFAC}
-	frequencia simples ${arrayMedia[calculoLinha].frequenciaMedia} intervalo ${intervalo2}`)
+	
+
+
 	mediana.mediana = medianaContinua.toFixed(1)
 
 	let p = document.createElement('p')
 	p.innerHTML =`<strong>Média:</strong> ${mediana.media} 
-	<strong>Moda:</strong> ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana}`
+	<strong>Moda:</strong> ${mediana.moda} <strong>Mediana:</strong> ${mediana.mediana} <strong>DesvioPadrao:</strong>
+	${raizDesvio.toFixed(2)}<strong> DP:</strong>${desvioPadraoPorcentagem.toFixed(1)}%`
 
 	mmm.innerHTML =  ''
 	mmm.appendChild(p)
@@ -591,17 +607,25 @@ function desenharGraficoContinua(array){
 
 }
 
-function medidasSeparatrizes(objetos){
-	if(tipo.value == 'discreta'){
-		objetos = objetos.map(item => Number(item))
-	}
+
+function calculaTipoSeparatriz(mult,k){
+		if(k <= 0 ){
+			 k = 1
+		}else if(k > mult){
+			k = mult	
+		}
+		return k
+}
+
+function calculaPorcentil(array){
+	let k = document.getElementById('k')
 	const medidaTipo = document.getElementById('separatriz')
 	const separatrizes = document.getElementById('separatrizes')
 	separatrizes.innerHTML = ""
 	const valorSeparatriz = document.createElement('p')
 	valorSeparatriz.setAttribute('style','font-size:20px;')
 	valorSeparatriz.setAttribute('class','alinhaTexto')
-	let k = document.getElementById('k')
+
 	let mult = 0
 	if(medidaTipo.value == 'quartil'){
 		mult = 4
@@ -612,46 +636,112 @@ function medidasSeparatrizes(objetos){
 	}else if(medidaTipo.value == 'porcentil'){
 		mult = 100
 	}
+
 	k.value = calculaTipoSeparatriz(mult,k.value)
-	if(tipo.value != 'continua'){
-		const tamanhoArray = objetos.length - 1
-		let posicaoQuartil = Math.round(tamanhoArray/mult)
-		if(posicaoQuartil < 1){
-			posicaoQuartil = 1
-		}
-		posicaoQuartil *= k.value
-		if(posicaoQuartil > tamanhoArray){
-			posicaoQuartil = tamanhoArray
-		}
-		if(posicaoQuartil%mult == 0){
-			let valorQuartil = objetos[posicaoQuartil]
-			if(tipo.value == 'discreta'){
-				const pos2 =  objetos[posicaoQuartil + 1]
-				 valorQuartil =  ((objetos[posicaoQuartil] + pos2)/2).toFixed(2)
-			}else{
-				const pos2 = objetos[posicaoQuartil + 1]
-				if(objetos[posicaoQuartil] != pos2){
-					valorQuartil = `${objetos[posicaoQuartil]} e ${pos2}`
-				}
-			}
-			valorSeparatriz.innerHTML = `${(100/mult)*k.value}% ${medidaTipo.value} K${k.value}=
-			 	(<strong>${valorQuartil}</strong>)`
-		}else{
-			const valorQuartil  =  objetos[posicaoQuartil]
-			console.log(toString(objetos[posicaoQuartil]))
-			valorSeparatriz.innerHTML = `${(100/mult)*k.value}% ${medidaTipo.value} K${k.value}=
-			 (<strong>${valorQuartil}</strong>)`
+	
+	let dado = 0
+	const tamanhoArray = array[array.length - 1].frequenciaAcumulada
+	const posicao = Number(((tamanhoArray)/mult)*k.value)
+
+	for(let i = 0; i < array.length; i++){
+		if(posicao < array[i].frequenciaAcumulada){
+			dado = array[i].dado
+			break
 		}
 	}
+
+	if(posicao == tamanhoArray){
+		dado = array[array.length - 1].dado
+	}
+
+	valorSeparatriz.innerHTML = valorSeparatriz.innerHTML = `${(100/mult)*k.value}% ${medidaTipo.value} K${k.value}=
+	(<strong>${dado}</strong>)`
 
 	separatrizes.appendChild(valorSeparatriz)
 }
 
-function calculaTipoSeparatriz(mult,k){
-		if(k <= 0 ){
-			 k = 1
-		}else if(k > mult){
-			k = mult	
+function medidaSeparatrizContinua(arrayMedia, intervalo2){
+	let k = document.getElementById('k')
+	const medidaTipo = document.getElementById('separatriz')
+	const separatrizes = document.getElementById('separatrizes')
+	separatrizes.innerHTML = ""
+	const valorSeparatriz = document.createElement('p')
+	valorSeparatriz.setAttribute('style','font-size:20px;')
+	valorSeparatriz.setAttribute('class','alinhaTexto')
+
+	let mult = 0
+	if(medidaTipo.value == 'quartil'){
+		mult = 4
+	}else if(medidaTipo.value == 'quintil'){
+		mult = 5
+	}else if(medidaTipo.value == 'decil'){
+		mult = 10
+	}else if(medidaTipo.value == 'porcentil'){
+		mult = 100
+	}
+
+	k.value = calculaTipoSeparatriz(mult,k.value)
+
+	const tamanhoArray = arrayMedia[arrayMedia.length - 1].frequenciaMediaAcumulada
+	const posicao = Number(((tamanhoArray)/mult)*k.value)
+
+	let calculoLinha = 0
+	for(let i = 0; i < arrayMedia.length; i++){
+		if(posicao > Number(arrayMedia[i].frequenciaMediaAcumulada)){
+			calculoLinha += 1
 		}
-		return k
+	}
+	
+	let calculoInferior = 0
+	let calculoFrequencia = 0
+	let calculoFAC = 0
+	
+	calculoInferior = arrayMedia[calculoLinha].inferior
+	calculoFrequencia = arrayMedia[calculoLinha].frequenciaMedia
+	
+	if(calculoLinha > 0){
+		calculoFAC = arrayMedia[Number(calculoLinha) - 1].frequenciaMediaAcumulada
+	}
+	
+	let medianaContinua = calculoInferior + 
+	(((posicao - calculoFAC)/arrayMedia[calculoLinha].frequenciaMedia) * intervalo2)
+
+	
+	valorSeparatriz.innerHTML = valorSeparatriz.innerHTML = `${(100/mult)*k.value}% ${medidaTipo.value} K${k.value}=
+	(<strong>${medianaContinua.toFixed(1)}</strong>)`
+
+	separatrizes.appendChild(valorSeparatriz)
+
+	
+}
+
+function calculaDesvioPadrao(objetos){
+	const amostraPopulacao = document.querySelector('input[name="opcao"]:checked').value
+	let desvioPadrao = 0
+	
+	if(tipo.value == 'discreta'){
+		let desvio = 0
+		for(let i = 0; i < objetos.length; i++){
+			desvio += ((objetos[i].dado - mediana.media)*(objetos[i].dado - mediana.media))*objetos[i].quantidade
+		}
+		if(amostraPopulacao == 'populacao'){
+			desvioPadrao = desvio/objetos[objetos.length - 1].frequenciaAcumulada
+		}else{
+		    desvioPadrao = desvio/(objetos[objetos.length - 1].frequenciaAcumulada - 1)
+		}
+		raizDesvio = Math.sqrt(desvioPadrao)
+		desvioPadraoPorcentagem = (raizDesvio/mediana.media)*100
+	}else{
+		let desvio = 0
+		for(let i = 0; i < objetos.length; i++){
+			desvio += ((objetos[i].intervaloMedia - mediana.media)*(objetos[i].intervaloMedia - mediana.media))*objetos[i].frequenciaMedia
+		}
+		if(amostraPopulacao == 'populacao'){
+			desvioPadrao = desvio/objetos[objetos.length - 1].frequenciaMediaAcumulada
+		}else{
+		    desvioPadrao = desvio/(objetos[objetos.length - 1].frequenciaMediaAcumulada - 1)
+		}
+		raizDesvio = Math.sqrt(desvioPadrao)
+		desvioPadraoPorcentagem = (raizDesvio/mediana.media)*100
+	}
 }
