@@ -117,7 +117,21 @@ class ObjetoDado{
 				}
 				mediana.media = (soma/(array.length - 1)).toFixed(1)
 			}else{
-				mediana.mediana = `${arrayMediana[valor1]} e ${arrayMediana[valor1+1]}`
+				let posicaoMediana = 0
+				for(let i = 0; i < array.length - 1; i++){
+					if(array[i].frequenciaAcumulada <= (array[array.length - 1].frequenciaAcumulada/2)){
+						posicaoMediana = i
+					}
+				}
+
+				if(array[posicaoMediana].frequenciaAcumulada + 1 > (array[array.length - 1].frequenciaAcumulada/2)){
+					mediana.mediana = `${array[posicaoMediana].dado} e ${array[posicaoMediana+1].dado}`
+				}else{
+					mediana.mediana = array[posicaoMediana].dado
+				}
+
+				console.log(array[posicaoMediana])
+
 			} 
 		}else{
 			const valor = parseInt((array[array.length - 1].frequenciaAcumulada)/2)
@@ -335,7 +349,7 @@ function tabelaContinua(array){
 		tdd.innerHTML = frequencia
 
 		//grafico
-		graficoContinua.push([`${valor1}|--${valor2}`,Number(valor1),valor2])
+		graficoContinua.push([`${valor1}|--${valor2}`,intervaloMedia])
 
 		valor1 = valor2
 		tdFP.innerHTML = ((frequencia * 100)/total).toFixed(1)
@@ -479,6 +493,7 @@ function ordenando(){
 	} 
 
 	tabelaOrdinal()
+	calculaPorcentil(objetosOrdinal)
 	google.charts.setOnLoadCallback(desenharGrafico(objetosOrdinal))
 
 } 
@@ -579,14 +594,15 @@ function desenharGrafico(array){
 }
 
 function desenharGraficoContinua(array){
+	console.log(array)
 	const tipo = document.getElementById('tipo')
 	const arrayGrafico = []
 	const visualizarGrafico = document.getElementById('graficos')
 	visualizarGrafico.innerHTML = ""
 	let grafico = new google.visualization.DataTable();
 	grafico.addColumn('string', 'Nome Dado')
-	grafico.addColumn('number', 'Valor 1')
-	grafico.addColumn('number', 'valor 2')
+	grafico.addColumn('number', 'Valor')
+	
 	
 	const opcoes = {
 		title : mudaNomeVariavel().innerHTML,
@@ -618,6 +634,7 @@ function calculaTipoSeparatriz(mult,k){
 }
 
 function calculaPorcentil(array){
+	console.log(array)
 	let k = document.getElementById('k')
 	const medidaTipo = document.getElementById('separatriz')
 	const separatrizes = document.getElementById('separatrizes')
