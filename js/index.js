@@ -118,16 +118,23 @@ class ObjetoDado{
 				mediana.media = (soma/(array.length - 1)).toFixed(1)
 			}else{
 				let posicaoMediana = 0
-				for(let i = 0; i < array.length - 1; i++){
-					if(array[i].frequenciaAcumulada <= (array[array.length - 1].frequenciaAcumulada/2)){
-						posicaoMediana = i
+
+				for(let i = 0; i < array.length; i++){
+					for(let j = 0; j <= array[i].frequenciaAcumulada; j++){
+						if(j == (array[array.length - 1].frequenciaAcumulada/2)){
+							posicaoMediana = i
+							i = array.length
+							break
+						}
 					}
 				}
 
-				if(array[posicaoMediana].frequenciaAcumulada + 1 > (array[array.length - 1].frequenciaAcumulada/2)){
-					mediana.mediana = `${array[posicaoMediana].dado} e ${array[posicaoMediana+1].dado}`
-				}else{
+				console.log(posicaoMediana)
+
+				if(array[posicaoMediana].frequenciaAcumulada > (array[array.length - 1].frequenciaAcumulada/2)){
 					mediana.mediana = array[posicaoMediana].dado
+				}else{
+					mediana.mediana = `${array[posicaoMediana].dado} e ${array[posicaoMediana+1].dado}`
 				}
 
 				console.log(array[posicaoMediana])
@@ -349,7 +356,7 @@ function tabelaContinua(array){
 		tdd.innerHTML = frequencia
 
 		//grafico
-		graficoContinua.push([`${valor1}|--${valor2}`,intervaloMedia])
+		graficoContinua.push([`${valor1}|--${valor2}`,Number(((frequencia * 100)/total).toFixed(1))])
 
 		valor1 = valor2
 		tdFP.innerHTML = ((frequencia * 100)/total).toFixed(1)
@@ -600,9 +607,8 @@ function desenharGraficoContinua(array){
 	const visualizarGrafico = document.getElementById('graficos')
 	visualizarGrafico.innerHTML = ""
 	let grafico = new google.visualization.DataTable();
-	grafico.addColumn('string', 'Nome Dado')
-	grafico.addColumn('number', 'Valor')
-	
+	grafico.addColumn('string','intervalo')
+	grafico.addColumn('number', 'Porcentagem')
 	
 	const opcoes = {
 		title : mudaNomeVariavel().innerHTML,
@@ -610,9 +616,16 @@ function desenharGraficoContinua(array){
 		whidth:300,
 		is3D : true,
 		legend: 'labeled',
-		slices:{2:{offset:0.2}}
+		slices:{2:{offset:0.2}},
+		axes: {
+            x: {
+              0: { side: 'top', label: 'White to move'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "100%" }
 
-		}
+	}
+
 	
 	
 	grafico.addRows(array)	
