@@ -4,7 +4,9 @@ body{
 }
 
 h1{
+    margin-top: 40px;
     text-align: center;
+    color: whitesmoke;
 }
 
 #tabelaCorpo0{
@@ -17,20 +19,22 @@ h1{
 
 .container{
     width: 60%;
-    margin-top: 10%;
+    margin-top: 4%;
     margin-right: 15%;
-    margin-left: 15%;
-    padding: 5%;
-    margin-bottom: 10%;
+    margin-left: 18%;
+    padding: 2%;
+    margin-bottom: 8%;
     border-radius: 10px;
     background-color: #c4e2e2;
+    text-align: center;
+    color: rgb(28, 52, 56);
+    border:2px solid rgb(136, 187, 174);
 }
 
 #tabelas{
     margin: 0 auto;
     margin-bottom: 40px;
     border: 5px;
-    border: 1px solid #7a7; 
 }
 
 #tabelas table{
@@ -53,16 +57,39 @@ h1{
     width: 90%;
     height: 40px;
     font-size: 20px;
+    border-radius: 10px;
+    border: 2px solid rgb(136, 187, 174);
+    text-align: center;
+}
+
+h4 span{
+    font-size: 20px;
+}
+
+#variavel{
+    width: 50%;
+    height: 30px;
+    border: 2px solid rgb(136, 187, 174);
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+#sepa{
+    font-size: 15px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
 }
 
 .botao{
-    background: blue no-repeat;
+    background: rgb(47, 47, 134) no-repeat;
     border-radius: 10px;
     padding: 10px;
     font-size: 20px;
     color: white;
     color:#999;
-    margin-bottom: 20px;
+    width: 25%;
+    margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 .botao:hover{
@@ -87,3 +114,36 @@ h1{
     text-align: center;
     font-family: 'sans-serif';
 }
+
+/* menu --------- */
+#menu{
+    text-align: center;
+    border-bottom: 4px solid #b3ecec;
+}
+#menu ul {
+    padding:0px;
+    margin:0px;
+    background-color:#EDEDED;
+    list-style:none;
+}
+
+#menu ul li { display: inline; }
+
+#menu ul li a {
+    padding: 10px 10px;
+    display: inline-block;
+
+    /* visual do link */
+    background-color:#EDEDED;
+    color: #333;
+    text-decoration: none;
+    border-bottom:3px solid #EDEDED;
+    font-size: 20px;
+}
+
+#menu ul li a:hover {
+    background-color:#D6D6D6;
+    color: #6D6D6D;
+    border-bottom:3px solid blue;
+}
+

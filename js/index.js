@@ -154,6 +154,8 @@ class ObjetoDado{
 }
 
 function calcular() {
+	document.getElementById('botao').setAttribute('style', 'display:none;')
+	document.getElementById('botao2').setAttribute('style', 'display:;')
 	const variavel = document.getElementById("variavel")
 	const tipo = document.getElementById("tipo")
 

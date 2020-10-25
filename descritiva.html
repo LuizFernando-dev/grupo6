@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<link rel="stylesheet" href="css/estilo.css">
+	<script>
+		
+	</script>
+	<title>Grupo 6</title>
+</head>
+<body>
+	<nav id="menu">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="descritiva.html">Descritiva</a></li>
+			<li><a href="probabilidade.html">Probabilidades</a>
+			<li><a href="#">Correlação</a></li>
+			<li><a href="#">Contato</a></li>
+		</ul>
+	</nav>
+	<h1>Estatistica Descritiva</h1>
+	<div class="container">
+			<h4><span>DADOS</span><input id="dados" class="form-control" type="text" name="dados" placeholder="valores separados por virgula: ex1,ex2,ex3..." ></h4><br>
+
+			<h3>Escolher arquivo com os dados: <input type="file" name="arquivo" id="exampleInputFile"><br></h3>
+
+			<p>Amostra<input type="radio" name="opcao" value="amostra"></p>
+			<p>População<input type="radio" name="opcao" value="populacao" checked></body></p>
+
+			<h3>Escolha o tipo da variavel:<select id="tipo">
+				<option value="palavra">Nominal</option>
+				<option value="ordinal">Ordinal</option>
+				<option value="discreta">Discreta</option>
+				<option value="continua">Continua</option>
+			</select><br></h3>
+
+
+			<h3>Nome Da Variavel: <input type="text" name="variavel" id="variavel"></h3><br> <!--nome da variavél: se é profissão, idade, salário... etc -->
+
+			<!-- TIPOS DE VARIAVEL:
+				A VARIAVEL É QUALITATIVA QUANDO SE TRATA DE PALAVRAS(EXEMPLOS: CIDADE, ESTADO CIVIL, SEXO, CORES, GRAU DE SASTISFAÇÃO....)
+				qualitativa nominal -> A ordem não importa, por exemplo se a variavel for uma cor a ordem não importa.
+				qualitativa ordinal -> A ordem importa, quando tem uma ordenação pré definida, por exemplo: meses do ano;
+
+				A VARIAVEL É QUANTITATIVA QUANDO SE TRATA DE NUMEROS(EXEMPLOS: SALARIOS, IDADES, FATURAMENTO, VENDAS....  )
+				quantitativa discreta -> ordem crescente,
+				quantitativa continua -> ordem crescente,
+
+				******A ORGANIZAÇÃO DOS DADOS DEPENDE DO TIPO DE VARIVEL ESCOLHIDA!! *******************
+			-->
+			<div>
+				<h4 id="sepa">Escolha a medida separatriz: <select id="separatriz">
+					<option value="quartil">Quartil</option>
+					<option value="quintil">Quintil</option>
+					<option value="decil">Decil</option>
+					<option value="porcentil">Porcentil</option>
+				</select>(K):<input type="number" value="1" style="width: 40px;" id="k">
+				<button class="botao-ordenar" style="display: none;">Calcular</button></h4>
+				<div id="separatrizes">
+					
+				</div>
+			</div>
+		<button onclick="calcular()" class="botao"  id="botao">calcular</button>
+		<button class="botao-ordenar" onclick="calcular()" id="botao2" style="display: none;">Calcular</button></h4>
+		
+		<div id="tabelas">
+			<input type="hidden" name="" id="indice" value="0">
+			
+		</div>
+		<div id="mmm"></div>
+		<div id="graficos">
+
+		</div>
+
+	</div>
+
+	<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>

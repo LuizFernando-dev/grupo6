@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/probabilidade.css">
+	<script>
+		
+	</script>
+	<title>Grupo 6</title>
+</head>
+<body>
+	<nav id="menu">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="descritiva.html">Descritiva</a></li>
+			<li><a href="probabilidade.html">Probabilidades</a></li>
+			<li><a href="#">Correlação</a></li>
+			<li><a href="#">Contato</a></li>
+		</ul>
+    </nav>
+    <nav id="probabilidade">
+		<ul style="list-style: none;">
+			<li><a href="">Binomial</a></li>
+			<li><a href="#">Normal</a></li>
+			<li><a href="#">Uniforme</a></li>
+		</ul>
+    </nav>
+    <div id="binominal">
+        <input class="valores" id="n" type="text" placeholder="quantidade da amostra: (N)" ><br>
+        <input class="valores" id="p" type="text" placeholder="sucesso: (P) 0..1 ex: 0.4"><br>
+        <input  class="valores" id="k" type="text" placeholder="evento: (K)"><br>
+        <button class="botao" onclick="calcular()">Calcular</button>
+        <p id="resultado"></p>
+    </div>
+    <script type="text/javascript" src="js/prob.js"></script>
+</body>
+</html>
