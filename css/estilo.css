@@ -144,6 +144,6 @@ h4 span{
 #menu ul li a:hover {
     background-color:#D6D6D6;
     color: #6D6D6D;
-    border-bottom:3px solid blue;
+    border-bottom:3px solid  rgb(47, 47, 134);
 }
 

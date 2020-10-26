@@ -20,18 +20,40 @@
     </nav>
     <nav id="probabilidade">
 		<ul style="list-style: none;">
-			<li><a href="">Binomial</a></li>
-			<li><a href="#">Normal</a></li>
-			<li><a href="#">Uniforme</a></li>
+			<li><a onclick="calculaTipo('bino')" href="#" id="bino">Binomial</a></li>
+			<li><a href="#" onclick="calculaTipo('norm')" id="norm">Normal</a></li>
+			<li><a href="#" onclick="calculaTipo('uni')" id="uni">Uniforme</a></li>
 		</ul>
     </nav>
-    <div id="binominal">
+    <div id="binominal" class="estilos">
         <input class="valores" id="n" type="text" placeholder="quantidade da amostra: (N)" ><br>
         <input class="valores" id="p" type="text" placeholder="sucesso: (P) 0..1 ex: 0.4"><br>
         <input  class="valores" id="k" type="text" placeholder="evento: (K)"><br>
         <button class="botao" onclick="calcular()">Calcular</button>
+        <p id="resultado" class="resultado"></p>
+	</div>
+	<div id="uniforme" class="estilos">
+        <input class="valores" id="b" type="text" placeholder="Ponto Maximo" ><br>
+        <input class="valores" id="a" type="text" placeholder="Ponto Minimo"><br>
+		<h3>
+			Maior que<input type="radio" value="maior" name="uniformTipo" onclick="uniformTipo()" checked>
+			Menor que<input type="radio" value="menor" name="uniformTipo" onclick="uniformTipo()">
+			Entre<input type="radio" value="emtre" name="uniformTipo" onclick="uniformTipo()">
+		</h3>
+		<input type="text" name="valor" placeholder="menor que" id="menor" class="valores" style="width: 20%;">
+		<input class="valores" type="text" name="valor" placeholder="maior que" id="maior" style="width: 20%;">
+        <button class="botao" onclick="calcularUniforme()">Calcular</button>
+        <p id="resultadoUniforme" class="resultado"></p>
+	</div>
+	<div id="normal" class="estilos">
+        <input class="valores" id="n" type="text" placeholder="Ponto Maximo" ><br>
+        <input class="valores" id="p" type="text" placeholder="Ponto Minimo"><br>
+        
+        <button class="botao" onclick="calcular()">Calcular</button>
         <p id="resultado"></p>
     </div>
-    <script type="text/javascript" src="js/prob.js"></script>
+	<script type="text/javascript" src="js/prob.js"></script>
+	<script type="text/javascript" src="js/tipoProb.js"></script>
+	<script type="text/javascript" src="js/uniforme.js"></script>
 </body>
 </html>
