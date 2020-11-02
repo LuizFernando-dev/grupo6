@@ -74,25 +74,46 @@ function calculaNormal(){
     const desvio = document.getElementById('desvio').value
     const tipo = document.querySelector('input[name="normalTipo"]:checked').value
     let probabilidade
+    let resultado
 
     if(tipo == 'maior'){
         probabilidade = document.getElementById('normalMaior').value
+        resultado = mostraResultado(probabilidade,media,desvio)
     }else if(tipo == 'menor'){
         probabilidade = document.getElementById('normalMenor').value
+        resultado = mostraResultado(probabilidade,media,desvio)
+    }else{
+        probabilidade = document.getElementById('normalMaior').value
+        resultado = mostraResultado(probabilidade,media,desvio)
+        probabilidade = document.getElementById('normalMenor').value
+        resultado += mostraResultado(probabilidade,media,desvio)
+
+        resultado = 100 - resultado
     }
 
+    /*
     const z = ((probabilidade - media)/desvio).toFixed(2)
-    const valores = z.split('')
-    const posLinha = Number(valores[0] + valores[2])
-    const posColum = Number(valores[3])
 
+    const valores = z.split('')
+    let posLinha
+    let posColum
+    if(valores[0] == '-'){
+        posLinha = Number(valores[1] + valores[3])
+        posColum = Number(valores[4])
+    }else{
+        posLinha = Number(valores[0] + valores[2])
+        posColum = Number(valores[3])
+    }
+
+    console.log(z,posLinha,posColum)
+    
     let resultado = encontraValorGauss(posLinha,posColum)
 
     resultado = 0.5 - resultado
 
     resultado *= 100
 
-
+    */
     resultadoNormal.innerHTML = `Resultado: ${resultado.toFixed(2)}%`
     
 }
@@ -102,4 +123,25 @@ function encontraValorGauss(posLinha, posColum){
     const valor = array[posLinha]
 
     return valor
+}
+
+function mostraResultado(probabilidade,media,desvio){
+    const z = ((probabilidade - media)/desvio).toFixed(2)
+
+    const valores = z.split('')
+    let posLinha
+    let posColum
+    if(valores[0] == '-'){
+        posLinha = Number(valores[1] + valores[3])
+        posColum = Number(valores[4])
+    }else{
+        posLinha = Number(valores[0] + valores[2])
+        posColum = Number(valores[3])
+    }
+    
+    let resultado = encontraValorGauss(posLinha,posColum)
+
+    resultado = 0.5 - resultado
+
+    return resultado *= 100
 }
