@@ -19,6 +19,7 @@
 		</ul>
     </nav>
     <nav id="probabilidade">
+		<input type="hidden" name="tipoCalculadora" id="calculadora">
 		<ul style="list-style: none;">
 			<li><a onclick="calculaTipo('bino')" href="#" id="bino">Binomial</a></li>
 			<li><a href="#" onclick="calculaTipo('norm')" id="norm">Normal</a></li>
@@ -46,14 +47,21 @@
         <p id="resultadoUniforme" class="resultado"></p>
 	</div>
 	<div id="normal" class="estilos">
-        <input class="valores" id="n" type="text" placeholder="Ponto Maximo" ><br>
-        <input class="valores" id="p" type="text" placeholder="Ponto Minimo"><br>
-        
-        <button class="botao" onclick="calcular()">Calcular</button>
-        <p id="resultado"></p>
+        <input class="valores" id="media" type="text" placeholder="Média" ><br>
+        <input class="valores" id="desvio" type="text" placeholder="Desvio Padrão"><br>
+		<h3>
+			Maior que<input type="radio" value="maior" name="normalTipo" onclick="uniformTipo()" checked>
+			Menor que<input type="radio" value="menor" name="normalTipo" onclick="uniformTipo()" >
+			Entre<input type="radio" value="emtre" name="normalTipo" onclick="uniformTipo()">
+		</h3>
+		<input disabled type="text" name="valor" placeholder="menor que" id="normalMenor" class="valores" style="width: 20%;">
+		<input class="valores" type="text" name="valor" placeholder="maior que" id="normalMaior" style="width: 20%;">
+        <button class="botao" onclick="calculaNormal()">Calcular</button>
+        <p id="resultadoNormal" class="resultado"></p>
     </div>
 	<script type="text/javascript" src="js/prob.js"></script>
 	<script type="text/javascript" src="js/tipoProb.js"></script>
 	<script type="text/javascript" src="js/uniforme.js"></script>
+	<script type="text/javascript" src="js/normal.js"></script>
 </body>
 </html>
