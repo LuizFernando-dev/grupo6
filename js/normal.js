@@ -73,47 +73,44 @@ function calculaNormal(){
     const media = document.getElementById('media').value
     const desvio = document.getElementById('desvio').value
     const tipo = document.querySelector('input[name="normalTipo"]:checked').value
+    const maior = document.getElementById('normalMaior').value
+    const menor = document.getElementById('normalMenor').value
     let probabilidade
     let resultado
 
     if(tipo == 'maior'){
-        probabilidade = document.getElementById('normalMaior').value
-        resultado = mostraResultado(probabilidade,media,desvio)
+        probabilidade = maior
+        if(media > probabilidade){
+            resultado = mostraResultado(probabilidade,media,desvio,true)
+        }else{
+            resultado = mostraResultado(probabilidade,media,desvio,false)
+        }
     }else if(tipo == 'menor'){
-        probabilidade = document.getElementById('normalMenor').value
-        resultado = mostraResultado(probabilidade,media,desvio)
+        probabilidade = menor
+        if(media <= menor){
+            resultado = mostraResultado(probabilidade,media,desvio,true)
+        }else{
+            resultado = mostraResultado(probabilidade,media,desvio,false)
+        }
     }else{
-        probabilidade = document.getElementById('normalMaior').value
-        resultado = mostraResultado(probabilidade,media,desvio)
-        probabilidade = document.getElementById('normalMenor').value
-        resultado += mostraResultado(probabilidade,media,desvio)
-
-        resultado = 100 - resultado
+        if(media >= menor && menor > 0){
+            probabilidade = maior
+            resultado = mostraResultado(probabilidade,media,desvio,true)
+            probabilidade = menor
+            resultado += mostraResultado(probabilidade,media,desvio,true)
+            resultado = 100 - resultado
+        }else{
+            probabilidade = maior
+            resultado = mostraResultado(probabilidade,media,desvio,false)
+            probabilidade = menor
+            resultado -= mostraResultado(probabilidade,media,desvio,false)
+        }
     }
 
-    /*
-    const z = ((probabilidade - media)/desvio).toFixed(2)
-
-    const valores = z.split('')
-    let posLinha
-    let posColum
-    if(valores[0] == '-'){
-        posLinha = Number(valores[1] + valores[3])
-        posColum = Number(valores[4])
-    }else{
-        posLinha = Number(valores[0] + valores[2])
-        posColum = Number(valores[3])
+    if(resultado < 0 ){
+        resultado *= -1
     }
-
-    console.log(z,posLinha,posColum)
     
-    let resultado = encontraValorGauss(posLinha,posColum)
-
-    resultado = 0.5 - resultado
-
-    resultado *= 100
-
-    */
     resultadoNormal.innerHTML = `Resultado: ${resultado.toFixed(2)}%`
     
 }
@@ -125,7 +122,7 @@ function encontraValorGauss(posLinha, posColum){
     return valor
 }
 
-function mostraResultado(probabilidade,media,desvio){
+function mostraResultado(probabilidade,media,desvio,total){
     const z = ((probabilidade - media)/desvio).toFixed(2)
 
     const valores = z.split('')
@@ -141,7 +138,11 @@ function mostraResultado(probabilidade,media,desvio){
     
     let resultado = encontraValorGauss(posLinha,posColum)
 
-    resultado = 0.5 - resultado
+    if(total){
+        resultado += 0.5
+    }else{
+        resultado -= 0.5
+    }
 
     return resultado *= 100
 }
