@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+	<link rel="stylesheet" href="css/probabilidade.css">
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
+		
+	</script>
+	<title>Grupo 6</title>
+</head>
+<body>
+	<nav id="menu">
+		<ul>
+			<li id="home"><a href="index.html">Home</a></li>
+			<li id="menuDescritiva"><a href="descritiva.html">Descritiva</a></li>
+			<li id="menuProbabilidade"><a href="probabilidade.html">Probabilidades</a>
+			<li id="menuCorrelacao"><a href="correlacao.html">Correlação</a></li>
+		</ul>
+    </nav>
+    <h1>Correlação</h1>
+    <div id="correlacao" class="estilos">
+		<input type="text" placeholder="nome variavel X" id="varX" class="valores" style="width: 22%;">
+		<input class="valores" type="text" placeholder="nome variavel Y" id="varY" style="width: 22%;">
+        <input class="valores" id="x" type="text" placeholder="Valores X separados por virgula: ,..,...," ><br>
+        <input class="valores" id="y" type="text" placeholder="Valores Y separados por virgula: ,..,...,"><br>
+        <button class="botao" onclick="calcularCorrelacao()">Calcular</button>
+        <p id="resultadoCorrelacao" class="resultado"></p>
+	</div>
+	<div id="calculaProjecao" style="display: none;" class="estilos">
+		<h3>Projeção futura</h3>
+		<p id="nomeX"></p>
+		<input class="valores" type="text" placeholder="valor do x" id="projecaoX" value="1">
+		<p id="nomeY"></p>
+		<input class="valores" type="text" placeholder="valor do y" id="projecaoY" value="1"><br>
+		Projeção de X:<input type="radio" value="x" name="tipoProjecao" onclick="tipoProjecao()" checked>
+		Projeção de Y:<input type="radio" value="y" name="tipoProjecao" onclick="tipoProjecao()" ><br>
+		<button class="botao-ordenar" onclick="calcularCorrelacao()" style="margin-top: 13px;">Calcular</button>
+	</div>
+	<div id="chart_div">
+
+	</div>
+	<script src="js/correlacao.js"></script>
+	<script type="text/javascript" src="js/tipoCorrelacao.js"></script>
+	<script src="js/menu.js"></script>
+</body>

@@ -56,3 +56,19 @@
 .tipoDaProbabilidade{
     background-color: #999;
 }
+
+#correlacao{
+    margin-top: 5%;
+    margin-bottom: 80px;
+}
+
+#chart_div{
+    width: 60%;
+    margin-left: 20%;
+    margin-bottom: 120px;
+}
+
+#calculaProjecao{
+    margin-top: 5%;
+    margin-bottom: 80px;  
+}
